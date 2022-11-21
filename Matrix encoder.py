@@ -1,96 +1,85 @@
-message = "сообщение11свсообщение11свсообщение11свсообщение11св"
-# !!!KEYS!!!
-KM = ["Ц", "Е", "Н", "Т", "Р"]
-KN = ["М", "У", "Н", "И", "Ц", "И", "П", "А", "Л", "Ь", "Н", "Ы", "Й"]
-# matrix
-matrix = []
-KMN = []
-    
-    
-# tools
-score = 0
-all_score = 0
-blank_mass = []
-message += "."
+message = "123456789111112345678922221234567893333123456789444412345678955551234567896666"
+# !!!КЛЮЧИ!!!
+KEYH = {"М": 0, "У": 0, "Н1": 0, "И1": 0, "Ц": 0, "И2": 0, "П": 0, "А": 0, "Л": 0, "Ь": 0, "Н2": 0, "Ы": 0, "Й": 0}
+KEYV = {"Ц": 0, "Е": 0, "Н": 0, "Т": 0, "Р": 0}
+# !!!КЛЮЧИ ДЛЯ СОЗДАНИЯ МАТРИЦЫ!!!
+VerticalKey = ["Ц", "Е", "Н", "Т", "Р"]
+HorisontalKey = ["М", "У", "Н", "И", "Ц", "И", "П", "А", "Л", "Ь", "Н", "Ы", "Й"]
+# Матричный блок, инструменты
+uncount = False
+oncount = False
+outstr = ""
+MatrixBlock = []
+BlankMass = []
+j = 0
+ja = 0
 
-# cycle
 for i in message:
-    if len(KMN) == len(KM):
-        score += 1
-        all_score += 1
-        blank_mass.append(i)
-        matrix.append(KMN)
-        KMN = []
-    elif all_score == len(message)-1:
-        if len(KMN) == len(KM):
-            matrix.append(KMN)
-        else:
-            string_left = len(KM) - len(KMN)
-            if string_left == 0:
-                all_score += 1
-                matrix.append(KMN)
-            else:
-                for k in range(string_left):
-                    if len(blank_mass) == 0:
-                        object_left = len(KN) - len(blank_mass)
-                    elif len(blank_mass) > 0:
-                        object_left = len(KN) - len(blank_mass)-1
-                    if object_left == 0:
-                        score += 1
-                        all_score += 1
-                        KMN.append(blank_mass)
-                    else:
-                        score += 1
-                        all_score += 1
-                        for j in range(object_left):
-                            blank_mass.append(".")
-                        KMN.append(blank_mass)
-                matrix.append(KMN)
-    else:  
-        score += 1
-        all_score += 1
-        blank_mass.append(i)
-        if score == len(KN):
-            score = 0
-            KMN.append(blank_mass)
-            blank_mass = []
+    j += 1
+    ja += 1
+    BlankMass.append(i)
 
+    # Несоответствие количества символов
+    # Нехватка
+    if ja == len(message):
 
+        if (j != len(HorisontalKey)) or (len(MatrixBlock) < len(VerticalKey)):
 
+            r = (len(VerticalKey) * len(HorisontalKey)) - ((len(MatrixBlock) * len(HorisontalKey)) + len(BlankMass))
 
+            if r != 0:
+                if r % len(HorisontalKey) != 0:
+                    for bm in range(r % len(HorisontalKey)):
+                        BlankMass.append('.')
+                        MatrixBlock.append(BlankMass)
+                if len(MatrixBlock) < len(VerticalKey):
+                    for mb in range(len(VerticalKey) - len(MatrixBlock)):
+                        for bm in range(len(HorisontalKey)):
+                            BlankMass.append('.')
+                        MatrixBlock.append(BlankMass)
+                        BlankMass = []
+            uncount = True
 
+    # Перебор
+    if (ja < len(message)) and (len(MatrixBlock) == len(VerticalKey)):
+        oncount = True
 
+    # Соответствие
+    if j == len(HorisontalKey):
+        j = 0
+        MatrixBlock.append(BlankMass)
+        BlankMass = []
 
-output = []
-codedicthorizontal = {"Ц":0, "Е":0, "Н":0, "Т":0, "Р":0}
+    # Условие на сходство длинны сообщения с количеством доступных символов в матричном блоке/недобором/перебором
+    if (len(MatrixBlock) == len(VerticalKey) or uncount or oncount):
+        uncount = False
+        oncount = False
 
-for i in matrix:
-    codedicthorizontal["Ц"] = i[0]
-    codedicthorizontal["Е"] = i[1]
-    codedicthorizontal["Н"] = i[2]
-    codedicthorizontal["Т"] = i[3]
-    codedicthorizontal["Р"] = i[4]
-    sorted_codedicthorizontal = dict(sorted(codedicthorizontal.items()))
-    print(sorted_codedicthorizontal)
+        # Горизонтальная сортировка
+        k = 0
+        for vk in KEYV:
+            KEYV[vk] = MatrixBlock[k]
+            k += 1
+        SORTKEYV = sorted(KEYV.items())
+        MatrixBlock = []
 
+        # Вертикальная сортировка
+        k = 0
+        elem = []
+        for hk in KEYH:
+            for strng in SORTKEYV:
+                elem.append(strng[1][k])
+                KEYH[hk] = elem
+            k += 1
+            elem = []
+        SORTKEYH = sorted(KEYH.items())
 
+        # Преобразование в строку
+        for strng in SORTKEYH:
+            elem.append(strng[1])
+        for s in elem:
+            for n in s:
+                outstr += n
 
-codedictvertical = {"М":0, "У":0, "Н":0, "И":0, "Ц":0, "И":0, "П":0, "А":0, "Л":0, "Ь":0, "Н":0, "Ы":0, "Й":0}
-
-for i in sorted_codedicthorizontal:
-    codedictvertical["М"] = i[0][0] + i[1][0] + i[2][0] + i[3][0] + i[4][0]
-    codedictvertical["У"] = i[0][1] + i[1][1] + i[2][1] + i[3][1] + i[4][1]
-    codedictvertical["Н"] = i[0][2] + i[1][2] + i[2][2] + i[3][2] + i[4][2]
-    codedictvertical["И"] = i[0][3] + i[1][3] + i[2][3] + i[3][3] + i[4][3]
-    codedictvertical["Ц"] = i[0][4] + i[1][4] + i[2][4] + i[3][4] + i[4][4]
-    codedictvertical["И"] = i[0][5] + i[1][5] + i[2][5] + i[3][5] + i[4][5]
-    codedictvertical["П"] = i[0][6] + i[1][6] + i[2][6] + i[3][6] + i[4][6]
-    codedictvertical["А"] = i[0][7] + i[1][7] + i[2][7] + i[3][7] + i[4][7]
-    codedictvertical["Л"] = i[0][8] + i[1][8] + i[2][8] + i[3][8] + i[4][8]
-    codedictvertical["Ь"] = i[0][9] + i[1][9] + i[2][9] + i[3][9] + i[4][9]
-    codedictvertical["Н"] = i[0][10] + i[1][10] + i[2][10] + i[3][10] + i[4][10]
-    codedictvertical["Ы"] = i[0][11] + i[1][11] + i[2][11] + i[3][11] + i[4][11]
-    codedictvertical["Й"] = i[0][12] + i[1][12] + i[2][12] + i[3][12] + i[4][12]
-
-sorted_codedictvertical = dict(sorted(codedictvertical.items()))
-print(sorted_codedictvertical)
+        # Возврат значения
+        print(outstr)

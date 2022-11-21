@@ -73,7 +73,7 @@ async def text_application(message: types.Message, state=FSMContext):
 
     out = await cipher_v1(message.text.lower().replace(' ', ''))
 
-    await message.answer(f"Вот ваш шифр: {out}\n\nБудьте здоровы!")
+    await message.answer(f"Вот ваш шифр: \n\n{out}\n\nБудьте здоровы!")
     await state.finish()
 
 

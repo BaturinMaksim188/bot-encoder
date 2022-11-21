@@ -1,4 +1,4 @@
-message = "1234567891111123456789222212345678933331234567894444123456789555512345678966661234567897777"
+message = "привет!привет!привет!"
 # !!!КЛЮЧИ!!!
 KEYH = {"М": 0, "У": 0, "Н1": 0, "И1": 0, "Ц": 0, "И2": 0, "П": 0, "А": 0, "Л": 0, "Ь": 0, "Н2": 0, "Ы": 0, "Й": 0}
 KEYV = {"Ц": 0, "Е": 0, "Н": 0, "Т": 0, "Р": 0}
@@ -22,18 +22,18 @@ for i in message:
     # Несоответствие количества символов
     # Нехватка
     if ja == len(message):
-
         if (j != len(HorisontalKey)) or (len(MatrixBlock) < len(VerticalKey)):
 
             r = (len(VerticalKey) * len(HorisontalKey)) - ((len(MatrixBlock) * len(HorisontalKey)) + len(BlankMass))
-
             if r != 0:
                 if r % len(HorisontalKey) != 0:
                     for bm in range(r % len(HorisontalKey)):
                         BlankMass.append('.')
-                        MatrixBlock.append(BlankMass)
+                    MatrixBlock.append(BlankMass)
+                    BlankMass = []
                 if len(MatrixBlock) < len(VerticalKey):
                     for mb in range(len(VerticalKey) - len(MatrixBlock)):
+                        BlankMass = []
                         for bm in range(len(HorisontalKey)):
                             BlankMass.append('.')
                         MatrixBlock.append(BlankMass)

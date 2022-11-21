@@ -30,18 +30,18 @@ async def cipher_v1(message):
         # Несоответствие количества символов
         # Нехватка
         if ja == len(message):
-
             if (j != len(HorisontalKey)) or (len(MatrixBlock) < len(VerticalKey)):
 
                 r = (len(VerticalKey) * len(HorisontalKey)) - ((len(MatrixBlock) * len(HorisontalKey)) + len(BlankMass))
-
                 if r != 0:
                     if r % len(HorisontalKey) != 0:
                         for bm in range(r % len(HorisontalKey)):
                             BlankMass.append('.')
-                            MatrixBlock.append(BlankMass)
+                        MatrixBlock.append(BlankMass)
+                        BlankMass = []
                     if len(MatrixBlock) < len(VerticalKey):
                         for mb in range(len(VerticalKey) - len(MatrixBlock)):
+                            BlankMass = []
                             for bm in range(len(HorisontalKey)):
                                 BlankMass.append('.')
                             MatrixBlock.append(BlankMass)

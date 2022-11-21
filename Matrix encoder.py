@@ -1,4 +1,4 @@
-message = "123456789111112345678922221234567893333123456789444412345678955551234567896666"
+message = "1234567891111123456789222212345678933331234567894444123456789555512345678966661234567897777"
 # !!!КЛЮЧИ!!!
 KEYH = {"М": 0, "У": 0, "Н1": 0, "И1": 0, "Ц": 0, "И2": 0, "П": 0, "А": 0, "Л": 0, "Ь": 0, "Н2": 0, "Ы": 0, "Й": 0}
 KEYV = {"Ц": 0, "Е": 0, "Н": 0, "Т": 0, "Р": 0}
@@ -54,8 +54,8 @@ for i in message:
     if (len(MatrixBlock) == len(VerticalKey) or uncount or oncount):
         uncount = False
         oncount = False
-
-        # Горизонтальная сортировка
+        
+        # Вертикальная сортировка
         k = 0
         for vk in KEYV:
             KEYV[vk] = MatrixBlock[k]
@@ -63,7 +63,7 @@ for i in message:
         SORTKEYV = sorted(KEYV.items())
         MatrixBlock = []
 
-        # Вертикальная сортировка
+        # Горизонтальная сортировка
         k = 0
         elem = []
         for hk in KEYH:
@@ -81,5 +81,5 @@ for i in message:
             for n in s:
                 outstr += n
 
-        # Возврат значения
-        print(outstr)
+# Возврат значения
+print(outstr)

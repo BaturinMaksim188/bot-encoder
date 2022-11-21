@@ -22,7 +22,7 @@ async def command_start(message: types.Message):
     await message.answer("Привет, выбери метод шифрования!", reply_markup=kb_all)
 
 
-# handler for button to v1 or v2 state
+# handler for button to v1 or v2 or decode state
 @dp.message_handler(content_types=['text'], state=States.CHOICE_W)
 async def command_start(message: types.Message, state: FSMContext):
     if message.text == "Матричный":
@@ -43,6 +43,9 @@ async def command_start(message: types.Message, state: FSMContext):
                        "Записываем буквы из полученной матрицы (по столбцам) в шифр."
         await message.answer(f"Отлично! Вот немного информации об этом шифре:\n\n{text_info_v2}\n\nОтправь своё "
                              f"сообщение, чтобы его зашифровать!")
+    elif message.text == "Мне нужен матричный дешифровщик!":
+        await States.CHOICE_TO_DECODE_v1.set()
+        await message.answer("Отлично, отправь мне свой шифр!")
     else:
         await state.finish()
         await message.answer("Вы повели себя неправильно!\n\nПовторите команду /start")
@@ -53,6 +56,14 @@ async def command_start(message: types.Message, state: FSMContext):
 @dp.message_handler(
     content_types=['photo', 'video', 'video_note', 'voice', 'poll', 'venue', 'audio', 'document', 'dice',
                    'animation', 'contact', 'sticker', 'location'], state=States.CHOICE_v1)
+async def not_a_text_v1(message: types.Message):
+    await message.answer("Это не текст, введите текст или /cancel")
+
+
+# No text CTDv1 handler
+@dp.message_handler(
+    content_types=['photo', 'video', 'video_note', 'voice', 'poll', 'venue', 'audio', 'document', 'dice',
+                   'animation', 'contact', 'sticker', 'location'], state=States.CHOICE_TO_DECODE_v1)
 async def not_a_text_v1(message: types.Message):
     await message.answer("Это не текст, введите текст или /cancel")
 
@@ -74,6 +85,16 @@ async def text_application(message: types.Message, state=FSMContext):
     out = await cipher_v1(message.text.lower().replace(' ', ''))
 
     await message.answer(f"Вот ваш шифр: \n\n{out}\n\nБудьте здоровы!")
+    await state.finish()
+
+
+# Text to CTDv1 handler
+@dp.message_handler(content_types=['text'], state=States.CHOICE_TO_DECODE_v1)
+async def text_application(message: types.Message, state=FSMContext):
+
+    out = await decipher_v1(message.text.lower().replace(' ', ''))
+
+    await message.answer(f"Вот ваш текст: \n\n{out}\n\nБудьте здоровы!")
     await state.finish()
 
 

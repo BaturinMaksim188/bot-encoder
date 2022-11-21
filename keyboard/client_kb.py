@@ -3,8 +3,9 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemo
 # Buttons on start_message
 b1_1 = KeyboardButton('Матричный')
 b1_2 = KeyboardButton('ADFGX')
+b1_3 = KeyboardButton('Мне нужен матричный дешифровщик!')
 kb_all = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-kb_all.add(b1_1).add(b1_2)
+kb_all.add(b1_1, b1_2).add(b1_3)
 
 
 # kb_start

@@ -5,4 +5,5 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 class States(StatesGroup):
     CHOICE_W = State()
     CHOICE_v1 = State()
+    CHOICE_TO_DECODE_v1 = State()
     CHOICE_v2 = State()
